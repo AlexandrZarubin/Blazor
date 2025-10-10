@@ -1,0 +1,12 @@
+﻿ul{
+    list-style:none;
+}
+
+.done
+{
+    color:gray;
+    text-decoration:line-through;
+}
+.todo{
+    text-decoration:none;
+}

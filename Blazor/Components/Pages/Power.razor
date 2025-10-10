@@ -1,0 +1,14 @@
+﻿@page "/power"
+@rendermode InteractiveServer
+<h3>Power</h3>
+<label for="base">Основание степени: </label>
+<input type="number" name="base" @bind="number" @onclick="Calculate"/>
+<br/>
+<br/>
+<label for="exponent">Показатель степени: </label>
+<input type="number" name="exponent" @bind="exponent" @onclick="Calculate"/>
+<br/>
+<br/>
+<label for="power">Степень: </label>
+<span name="power">@power</span>
+
