@@ -1,0 +1,41 @@
+﻿.row-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.m-0 {
+    margin: 0;
+}
+
+input {
+    width: 220px;
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.out-box {
+    min-width: 220px;
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.mono {
+    font-family: ui-monospace, Menlo, Consolas, "Courier New", monospace;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.out-box .mono {
+    white-space: pre;
+    overflow-x: auto;
+    max-width: 500px;
+    display: inline-block;
+}

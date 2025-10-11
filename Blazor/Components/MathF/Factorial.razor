@@ -1,0 +1,22 @@
+﻿@page "/factorial"
+@rendermode InteractiveServer
+
+<h3>Factorial</h3>
+
+<div class="calc-box">
+    <input type="number"
+           @bind-value="N"
+           @bind-value:event="oninput"
+           min="0"
+           placeholder="Enter n" />
+</div>
+
+@if (lines.Count > 0)
+{
+    <ul class="facts">
+        @foreach (var line in lines)
+        {
+            <li>@line</li>
+        }
+    </ul>
+}

@@ -1,0 +1,29 @@
+﻿@page "/converter"
+@rendermode InteractiveServer
+
+<div class="row-line">
+    <h3 class="m-0">Dec → Bin</h3>
+    <input type="number" @bind-value="DecValue" @bind-value:event="oninput" />
+    <div class="out-box"><span class="mono bold">@BinResult</span></div>
+</div>
+
+<div class="row-line">
+    <h3 class="m-0">Dec → Hex</h3>
+    <input type="number" @bind-value="DecHexValue" @bind-value:event="oninput" placeholder="Введите число" />
+    <div class="out-box"><span class="mono bold">@DecHexResult</span></div>
+</div>
+
+<div class="row-line">
+    <h3 class="m-0">Hex → Dec</h3>
+    <input type="text" @bind-value="HexText" @bind-value:event="oninput" placeholder="Введите hex (0–9 A–F)" />
+    <div class="out-box"><span class="mono bold">@HexResult</span></div>
+</div>
+
+<div class="row-line">
+    <h3 class="m-0">Bin → Dec</h3>
+    <input type="text" @bind-value="BinText" @bind-value:event="oninput" placeholder="Введите бинарное (0/1)" />
+    <div class="out-box"><span class="mono bold">@DecResult</span></div>
+</div>
+
+
+

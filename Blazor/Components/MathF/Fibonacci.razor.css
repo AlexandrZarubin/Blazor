@@ -1,0 +1,17 @@
+﻿.calc-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+input {
+    width: 120px;
+    padding: 4px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.result {
+    font-weight: 700;
+    color: #f59e0b;
+}
