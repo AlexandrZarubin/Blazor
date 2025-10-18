@@ -1,0 +1,60 @@
+﻿@page "/teachers"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Academy.Models
+@using Academy.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<Academy.Data.AcademyContext> DbFactory
+@rendermode InteractiveServer
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+<div>
+    <form action="/teachers" data-enhance data-permanent>
+        <input type="search" name="q" value="@Q" placeholder="Search (name, email, phone)" />
+        <input type="submit" value="Search" />
+    </form>
+</div>
+
+<p>
+    <a href="teachers/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="Filtered">
+    <PropertyColumn Property="teacher => teacher.last_name"     Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.first_name"    Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.middle_name"   Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.birth_date"    Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.email"         Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.phone"         Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.work_since"    Sortable="true"/>
+    <PropertyColumn Property="teacher => teacher.rate"          Sortable="true"/>
+
+    <TemplateColumn Context="teacher">
+        <a href="@($"teachers/edit?teacher_id={teacher.teacher_id}")">Edit</a> |
+        <a href="@($"teachers/details?teacher_id={teacher.teacher_id}")">Details</a> |
+        <a href="@($"teachers/delete?teacher_id={teacher.teacher_id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private AcademyContext context = default!;
+    [SupplyParameterFromQuery(Name = "q")]
+    public string? Q { get; set; } = string.Empty;
+    
+
+    IQueryable<Teacher> Filtered => context.Teachers.AsNoTracking().Where(x =>
+            string.IsNullOrEmpty(Q) ||
+            x.last_name.Contains(Q) ||
+            x.first_name.Contains(Q) ||
+            (x.middle_name != null && x.middle_name.Contains(Q)) ||
+            (x.email != null && x.email.Contains(Q)) ||
+            (x.phone != null && x.phone.Contains(Q)));
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

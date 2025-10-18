@@ -1,0 +1,73 @@
+﻿@page "/students"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Academy.Models
+@using Academy.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<Academy.Data.AcademyContext> DbFactory
+@rendermode InteractiveServer
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+<div>
+    <form action="/students" data-enhance data-permanent>
+        <input type="search" name="q" value="@Q" placeholder="Search (name, email, phone)" />
+        <input type="submit" value="Search" />
+    </form>
+</div>
+
+<div class="mt-2">
+    <label class="form-label me-2">Items per page</label>
+    <select class="form-select d-inline-block w-auto" @bind="pagination.ItemsPerPage">
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+    </select>
+</div>
+
+<p>
+    <a href="students/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="Filtered" Pagination="pagination">
+    <PropertyColumn Property="student => student.last_name"     Sortable="true"/>
+    <PropertyColumn Property="student => student.first_name"    Sortable="true"/>
+    <PropertyColumn Property="student => student.middle_name"   Sortable="true"/>
+    <PropertyColumn Property="student => student.birth_date"    Sortable="true"/>
+    <PropertyColumn Property="student => student.email"         Sortable="true"/>
+    <PropertyColumn Property="student => student.phone"         Sortable="true"/>
+    <PropertyColumn Property="student => student.photo"                        />
+    <PropertyColumn Property="student => student.group"         Sortable="true"/>
+
+    <TemplateColumn Context="student">
+        <a href="@($"students/edit?stud_id={student.stud_id}")">Edit</a> |
+        <a href="@($"students/details?stud_id={student.stud_id}")">Details</a> |
+        <a href="@($"students/delete?stud_id={student.stud_id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+<div class="mt-2">
+    <Paginator State="pagination" />
+</div>
+
+@code {
+    private AcademyContext context = default!;
+    [SupplyParameterFromQuery(Name = "q")]
+    public string? Q { get; set; } = string.Empty;
+
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+    IQueryable<Student> Filtered => context.Students.AsNoTracking().Where(x =>
+            string.IsNullOrEmpty(Q) ||
+            x.last_name.Contains(Q) ||
+            x.first_name.Contains(Q) ||
+            (x.middle_name != null && x.middle_name.Contains(Q)) ||
+            (x.email != null && x.email.Contains(Q)) ||
+            (x.phone != null && x.phone.Contains(Q)));
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}
